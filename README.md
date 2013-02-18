@@ -1,14 +1,14 @@
 # Session Check
 
-Checks every 10 sec to see if your session has expired and boots you to the sign in page if it is.
+A gem that supplies a JS routine to check every 10 sec to see if your session has expired, and boots you to the sign in page if it is.
 
 # Usage
 
-Include the gem in your Gemfile
+Include the gem in your Gemfile...
 
     gem 'session-check'
 
-Include the helper tag in your layout.erb, anywhere in the _<head>_ tag.
+... and include the helper tag in your layout.erb, anywhere in the _<head>_ tag.
 
     <%= session_check %>
 
