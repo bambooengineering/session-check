@@ -1,6 +1,6 @@
 module SessionCheckHelper
 
-  def session_check_js
+  def session_check
     "<script>
     var session_time_left = #{Devise.timeout_in};
 var session_check = function(){
