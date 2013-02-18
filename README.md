@@ -1,0 +1,1 @@
+Checks every 10 sec to see if your session has expired and boots you to the sign in page if it is.
