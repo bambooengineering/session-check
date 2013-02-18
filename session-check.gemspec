@@ -6,9 +6,9 @@ require 'session/check/version'
 Gem::Specification.new do |s|
   s.name = 'session-check'
   s.version = Session::Check::VERSION
-  s.authors = ['Banco Dev']
-  s.email = ['dev@firstbanco.com']
-  s.summary = 'Rails Engine for clients to check if their session has expired'
+  s.authors = ['Harry Lascelles']
+  s.email = ['harry@harrylascelles.com']
+  s.summary = 'A gem for JS clients to check if their session has expired.'
 
   s.files = Dir["{lib,config}/**/*"] + ["README.md"]
   s.require_paths = ['lib']
