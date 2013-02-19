@@ -6,6 +6,7 @@ module Session
       initializer "session-check.loader" do
         ActiveSupport.on_load :action_controller do
           helper SessionCheckHelper
+          helper_method :session_check
         end
       end
     end
