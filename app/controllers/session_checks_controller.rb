@@ -1,3 +1,5 @@
+require 'session_off'
+
 class SessionChecksController < ActionController::Base
 
   skip_authorization_check if defined?(CanCan)
@@ -6,7 +8,7 @@ class SessionChecksController < ActionController::Base
   # Find it there is a session, and if it has any warden information. If so, the user is logged in.
   def time_to_session_expiry
     sid = request.cookies['_session_id']
-    sess = Redis.current.get("www_session:#{sid}")
+    sess = Redis.current.get("#{REDIS_SESSION_NAMESPACE}:#{sid}")
     render json: {session_exists: (sess && sess.include?('warden'))}
   end
 end
