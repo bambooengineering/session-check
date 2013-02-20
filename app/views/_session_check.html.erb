@@ -1,0 +1,28 @@
+<script>
+    var should_session_check = <%= !current_user.nil? %>;
+    (function () {
+        var session_time_left = <%= session_time %>;
+        var force_sign_in = function () {
+            window.location = '/users/sign_in';
+        };
+        var session_check = function () {
+            session_time_left = session_time_left - 10;
+            if (should_session_check && session_time_left < 0) {
+                $.get('/session_check/time_to_session_expiry')
+                        .done(function (d) {
+                            if (!d.session_exists) {
+                                force_sign_in();
+                            }
+                        })
+                        .fail(force_sign_in);
+            }
+            setTimeout(session_check, 1000);
+        };
+        setTimeout(session_check, 1000);
+        $.ajaxSetup({
+            complete: function (xhr) {
+                session_time_left = <%= session_time %>;
+            }
+        });
+    }());
+</script>

@@ -15,4 +15,5 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_dependency 'rails', '> 3.0'
+  s.add_dependency 'session_off'
 end
