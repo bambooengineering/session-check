@@ -2,7 +2,7 @@ require 'devise'
 
 module SessionCheckHelper
 
-  def session_check(options)
+  def session_check(options = {})
     locals = {
       session_time: Devise.timeout_in,
       check_every: 10,
