@@ -1,10 +1,10 @@
 <script>
     var should_session_check = <%= !current_user.nil? %>;
     (function () {
-        var check_every_s = 10;
+        var check_every_s = <%= check_every %>;
         var session_time_left = <%= session_time %>;
         var force_sign_in = function () {
-            window.location = '/users/sign_in';
+            window.location = '<%= logged_out_url %>';
         };
         var session_check = function () {
             session_time_left = session_time_left - check_every_s;
@@ -20,10 +20,12 @@
             setTimeout(session_check, check_every_s * 1000);
         };
         setTimeout(session_check, check_every_s * 1000);
+        <% if reset_counter_on_ajax %>
         $.ajaxSetup({
             complete: function (xhr) {
                 session_time_left = <%= session_time %>;
             }
         });
+        <% end %>
     }());
 </script>
