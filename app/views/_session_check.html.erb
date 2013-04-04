@@ -13,13 +13,15 @@
                         .done(function (d) {
                             if (!d.session_exists) {
                                 force_sign_in();
+                            } else {
+                                session_time_left = d.session_expires_in;
                             }
                         })
                         .fail(force_sign_in);
             }
-            setTimeout(session_check, check_every_s * 1000);
+            setTimeout(session_check, check_every_s * 5000);
         };
-        setTimeout(session_check, check_every_s * 1000);
+        setTimeout(session_check, check_every_s * 5000);
         <% if reset_counter_on_ajax %>
         $.ajaxSetup({
             complete: function (xhr) {
