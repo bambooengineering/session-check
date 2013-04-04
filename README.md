@@ -20,4 +20,4 @@ A JS timeout checks a value supplied from your Devise config, and when it determ
 it takes the user to the sign in page. A global AJAX listener ensures AJAX heavy apps are catered for, by listening to each
 request and resetting the counter for you.
 
-No server ping requests are made, so there is no extra load on your server.
+No server ping requests are made until the moment the session is expected to be expired, so there is no extra load on your server.
