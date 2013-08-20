@@ -21,3 +21,10 @@ it takes the user to the sign in page. A global AJAX listener ensures AJAX heavy
 request and resetting the counter for you.
 
 No server ping requests are made until the moment the session is expected to be expired, so there is no extra load on your server.
+
+# Non-refreshing logins
+
+If a user is not lot logged in, then no server pings will be perfomed. If, however, you application logs a user in without refreshing
+their browser, you can start the ping process by calling:
+
+    SessionCheck.should_session_check = true;

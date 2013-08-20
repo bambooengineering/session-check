@@ -1,5 +1,7 @@
 <script>
-    var should_session_check = <%= !current_user.nil? %>;
+    var SessionCheck = {
+        should_session_check: <%= !current_user.nil? %>
+    };
     (function () {
         var check_every_s = <%= check_every %>;
         var session_time_left = <%= session_time %>;
@@ -8,7 +10,7 @@
         };
         var session_check = function () {
             session_time_left = session_time_left - check_every_s;
-            if (should_session_check && session_time_left < 0) {
+            if (SessionCheck.should_session_check && session_time_left < 0) {
                 $.get('/session_check/time_to_session_expiry')
                         .done(function (d) {
                             if (!d.session_exists) {
