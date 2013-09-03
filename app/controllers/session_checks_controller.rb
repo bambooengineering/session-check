@@ -1,5 +1,3 @@
-require 'session_off'
-
 class SessionChecksController < ActionController::Base
 
   skip_authorization_check if defined?(CanCan)

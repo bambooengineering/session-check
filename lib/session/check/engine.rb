@@ -1,5 +1,4 @@
 require 'rails'
-require 'session_off'
 
 module Session
   module Check
