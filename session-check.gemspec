@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.email = ['harry@harrylascelles.com']
   s.homepage = 'https://github.com/firstbanco/session-check'
   s.summary = 'A gem for JS clients to check if their session has expired.'
+  s.license = 'MIT'
 
   s.files = Dir["{app,lib,config}/**/*"] + ["README.md"]
   s.require_paths = ['lib']
