@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    session-check (0.2.2)
+    session-check (0.2.3)
       devise
-      rails (> 5.0)
+      rails (>= 5.0)
 
 GEM
   remote: http://rubygems.org/
