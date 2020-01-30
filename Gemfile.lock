@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    session-check (0.2.1)
+    session-check (0.2.2)
       devise
       rails (> 5.0)
 
