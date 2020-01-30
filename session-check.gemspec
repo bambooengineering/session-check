@@ -15,6 +15,6 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,lib,config}/**/*"] + ["README.md"]
   s.require_paths = ['lib']
 
-  s.add_dependency 'rails', '> 3.0'
+  s.add_dependency 'rails', '> 5.0'
   s.add_dependency 'devise'
 end

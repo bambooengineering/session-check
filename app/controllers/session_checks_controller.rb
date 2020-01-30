@@ -2,7 +2,7 @@ class SessionChecksController < ActionController::Base
 
   skip_authorization_check if defined?(CanCan)
 
-  prepend_before_filter :dont_update_request_time
+  prepend_before_action :dont_update_request_time
 
   # Find it there is a session, and if it has any warden information. If so, the user is logged in.
   def time_to_session_expiry
