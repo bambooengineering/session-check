@@ -16,8 +16,8 @@ class SessionChecksController < ActionController::Base
     render json: {session_exists: session_exists, session_expires_in: session_expires_in}
   end
 
-  # This ensures this requeust ping doesn't update their last access time.
+  # This ensures this request ping doesn't update their last access time.
   def dont_update_request_time
-    env['devise.skip_trackable'] = true
+    request.env['devise.skip_trackable'] = true
   end
 end
