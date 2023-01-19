@@ -1,3 +1,6 @@
 .idea
 *.gem
 /.rakeTasks
+/spec/internal/log/
+/.byebug_history
+/spec/internal/db/combustion_test.sqlite
