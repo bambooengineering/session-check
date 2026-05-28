@@ -1,4 +1,4 @@
-<script>
+<script<% if local_assigns[:nonce] %> nonce="<%= nonce %>"<% end %>>
     var SessionCheck = {
         should_session_check: <%= !current_user.nil? %>
     };
