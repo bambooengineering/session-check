@@ -31,4 +31,5 @@ their browser, you can start the ping process by calling:
 
 # Changelog
 
+Version 1.1.0 : Added optional nonce
 Version 0.2.1 : Added explicit reference to Devise (which is required)
