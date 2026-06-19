@@ -25,6 +25,12 @@ describe Session::Check::Engine do
     expect(result).to include('nonce="abc123"')
   end
 
+  it "uses a 1000ms multiplier for setTimeout so check_every (in seconds) converts correctly to milliseconds" do
+    instance = ActionController::Base.new
+    result = instance.session_check
+    expect(result).to include("check_every_s * 1000")
+  end
+
   it "has a to_prepare block that adds the helper to a subclass of ActionController::Base" do
     instance = SomeController.new
     result = instance.session_check
