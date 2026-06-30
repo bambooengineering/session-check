@@ -8,31 +8,67 @@ describe Session::Check::SessionChecksController, type: :request do
   end
 
   describe "#time_to_session_expiry" do
-    it "returns the time to session expiry" do
-      expect(User.timeout_in).to eq(30.minutes)
-
-      seconds_since_last_request = (Time.now.utc - 500.seconds).to_i.seconds
-      expect(described_class)
-        .to receive(:time_of_last_warden_request).and_return(seconds_since_last_request)
-      get "/session_check/time_to_session_expiry"
-      expected_expires_in = 30.minutes - Time.now.utc.to_i.seconds + seconds_since_last_request
-      result = JSON.parse(response.body)
-      expected_payload = { "session_exists" => true, "session_expires_in" => expected_expires_in }
-      expect(result).to eq(expected_payload)
-    end
-  end
-
-  describe "#seconds_since_last_warden_request" do
-    it "returns the seconds since the last warden request" do
-      session = { "warden.user.user.session" => { "last_request_at" => 500.seconds.ago } }
-      result = described_class.time_of_last_warden_request(session)
-      expect(result).to eq(500.seconds.ago)
+    context "with the default session_active_proc" do
+      it "returns session_exists: true and Devise.timeout_in when a user is present" do
+        get "/session_check/time_to_session_expiry"
+        result = JSON.parse(response.body)
+        expect(result).to eq({ "session_exists" => true, "session_expires_in" => Devise.timeout_in.to_i })
+      end
     end
 
-    it "returns now if there is no warden information" do
-      session = {}
-      result = described_class.time_of_last_warden_request(session)
-      expect(result).to eq(Time.zone.now)
+    context "with a custom session_active_proc" do
+      around do |example|
+        original = Session::Check.configuration.session_active_proc
+        Session::Check.configuration.session_active_proc = ->(_controller) { { exists: false, expires_in: 42 } }
+        begin
+          example.run
+        ensure
+          Session::Check.configuration.session_active_proc = original
+        end
+      end
+
+      it "delegates to the custom proc and returns its result" do
+        get "/session_check/time_to_session_expiry"
+        result = JSON.parse(response.body)
+        expect(result).to eq({ "session_exists" => false, "session_expires_in" => 42 })
+      end
+    end
+
+    context "when the proc returns an ActiveSupport::Duration for expires_in" do
+      around do |example|
+        original = Session::Check.configuration.session_active_proc
+        Session::Check.configuration.session_active_proc = ->(_controller) { { exists: true, expires_in: 30.minutes } }
+        begin
+          example.run
+        ensure
+          Session::Check.configuration.session_active_proc = original
+        end
+      end
+
+      it "coerces expires_in to an integer" do
+        get "/session_check/time_to_session_expiry"
+        result = JSON.parse(response.body)
+        expect(result["session_expires_in"]).to eq(1800)
+        expect(result["session_expires_in"]).to be_a(Integer)
+      end
+    end
+
+    context "when the proc returns a truthy non-boolean for exists" do
+      around do |example|
+        original = Session::Check.configuration.session_active_proc
+        Session::Check.configuration.session_active_proc = ->(_controller) { { exists: "yes", expires_in: 60 } }
+        begin
+          example.run
+        ensure
+          Session::Check.configuration.session_active_proc = original
+        end
+      end
+
+      it "coerces exists to a boolean" do
+        get "/session_check/time_to_session_expiry"
+        result = JSON.parse(response.body)
+        expect(result["session_exists"]).to be(true)
+      end
     end
   end
 end

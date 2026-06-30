@@ -1,9 +1,9 @@
 <script<% if local_assigns[:nonce] %> nonce="<%= nonce %>"<% end %>>
     var SessionCheck = {
-        should_session_check: <%= !current_user.nil? %>
+        should_session_check: <%= session_active %>
     };
     (function () {
-        var check_every_s = <%= check_every %>;
+        var check_every_s = <%= check_every_s %>;
         var session_time_left = <%= session_time %>;
         var force_sign_in = function () {
             window.location = '<%= logged_out_url %>';
@@ -21,9 +21,9 @@
                         })
                         .fail(force_sign_in);
             }
-            setTimeout(session_check, check_every_s * 5000);
+            setTimeout(session_check, check_every_s * 1000);
         };
-        setTimeout(session_check, check_every_s * 5000);
+        setTimeout(session_check, check_every_s * 1000);
         <% if reset_counter_on_ajax %>
         $.ajaxSetup({
             complete: function (xhr) {

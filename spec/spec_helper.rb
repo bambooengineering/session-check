@@ -4,7 +4,6 @@ Bundler.require :default, :test
 
 require "rails/all"
 require "combustion"
-require "pry-byebug"
 require "timecop"
 
 Combustion.initialize! :active_record
