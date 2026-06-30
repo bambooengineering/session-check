@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    session-check (1.1.0)
+    session-check (2.0.0)
       devise
       rails (>= 5.0)
 
@@ -221,14 +221,14 @@ GEM
     rspec-mocks (3.13.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-rails (5.1.2)
-      actionpack (>= 5.2)
-      activesupport (>= 5.2)
-      railties (>= 5.2)
-      rspec-core (~> 3.10)
-      rspec-expectations (~> 3.10)
-      rspec-mocks (~> 3.10)
-      rspec-support (~> 3.10)
+    rspec-rails (7.1.1)
+      actionpack (>= 7.0)
+      activesupport (>= 7.0)
+      railties (>= 7.0)
+      rspec-core (~> 3.13)
+      rspec-expectations (~> 3.13)
+      rspec-mocks (~> 3.13)
+      rspec-support (~> 3.13)
     rspec-support (3.13.1)
     securerandom (0.4.1)
     sqlite3 (2.1.0)
@@ -256,10 +256,10 @@ DEPENDENCIES
   combustion
   pry-byebug
   rspec
-  rspec-rails (~> 5.0)
+  rspec-rails (~> 7.0)
   session-check!
   sqlite3
   timecop
 
 BUNDLED WITH
-   4.0.6
+  4.0.6
