@@ -1,4 +1,8 @@
-# Session Check
+Session Check
+=========
+
+[![Gem Version](https://img.shields.io/gem/v/session-check?color=green)](https://rubygems.org/gems/session-check)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 A gem that returns you to your application's sign in page when your Devise session expires.
 
