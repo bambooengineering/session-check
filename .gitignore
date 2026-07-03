@@ -4,3 +4,4 @@
 /spec/internal/log/
 /.byebug_history
 /spec/internal/db/combustion_test.sqlite
+/node_modules/
