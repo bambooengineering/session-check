@@ -1,0 +1,13 @@
+{
+  "name": "session-check-js",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Unit tests for the session-check engine's client-side JS. Not published; excluded from the gem package.",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}

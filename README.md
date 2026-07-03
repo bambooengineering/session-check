@@ -76,8 +76,22 @@ server-side ping endpoint and the initial JS `should_session_check` value. All o
 
 If `session_active_proc` is not set the gem uses the default Devise behaviour, computing remaining session time from the Warden last-request timestamp.
 
+# Development
+
+The client-side JS lives in `app/assets/javascripts/session_check.js` as plain, dependency-free JS
+so it can be unit tested in isolation. The `_session_check` partial only passes configuration in via
+`window.SessionCheckConfig` and inlines this file's contents — no asset pipeline setup is required
+by consuming applications.
+
+JS unit tests (Jest + jsdom) live under `spec/javascript` and are scoped to this repo only —
+`package.json`/`node_modules` are dev-only and excluded from the published gem. Run them with:
+
+    npm install
+    npm test
+
 # Changelog
 
+Version 2.0.1 : Fix session-expiry check drifting in background/inactive tabs
 Version 2.0.0 : **Breaking change** — default Devise behaviour now correctly computes remaining session time from the Warden last-request timestamp rather than always returning the full timeout. `current_user` is no longer exposed to the session check partial. Added `session_active_proc` configuration option for non-Devise session support. Fixed setTimeout multiplier (5000 → 1000) so session checks fire at the correct interval. Bump your dependency to `>= 2.0.0`.
 Version 1.1.0 : Added optional nonce
 Version 0.2.1 : Added explicit reference to Devise (which is required)

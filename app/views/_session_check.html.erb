@@ -1,35 +1,12 @@
 <script<% if local_assigns[:nonce] %> nonce="<%= nonce %>"<% end %>>
-    var SessionCheck = {
-        should_session_check: <%= session_active %>
-    };
-    (function () {
-        var check_every_s = <%= check_every_s %>;
-        var session_time_left = <%= session_time %>;
-        var force_sign_in = function () {
-            window.location = '<%= logged_out_url %>';
-        };
-        var session_check = function () {
-            session_time_left = session_time_left - check_every_s;
-            if (SessionCheck.should_session_check && session_time_left < 0) {
-                $.get('/session_check/time_to_session_expiry')
-                        .done(function (d) {
-                            if (!d.session_exists) {
-                                force_sign_in();
-                            } else {
-                                session_time_left = d.session_expires_in;
-                            }
-                        })
-                        .fail(force_sign_in);
-            }
-            setTimeout(session_check, check_every_s * 1000);
-        };
-        setTimeout(session_check, check_every_s * 1000);
-        <% if reset_counter_on_ajax %>
-        $.ajaxSetup({
-            complete: function (xhr) {
-                session_time_left = <%= session_time %>;
-            }
-        });
-        <% end %>
-    }());
+window.SessionCheckConfig = {
+  should_session_check: <%= session_active %>,
+  check_every_s: <%= check_every_s %>,
+  session_time: <%= session_time %>,
+  logged_out_url: <%= raw ERB::Util.json_escape(logged_out_url.to_json) %>,
+  reset_counter_on_ajax: <%= !!reset_counter_on_ajax %>
+};
+</script>
+<script<% if local_assigns[:nonce] %> nonce="<%= nonce %>"<% end %>>
+<%= raw File.read(Session::Check::Engine.root.join('app', 'assets', 'javascripts', 'session_check.js')) %>
 </script>

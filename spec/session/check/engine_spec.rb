@@ -36,4 +36,17 @@ describe Session::Check::Engine do
     result = instance.session_check
     expect(result).to include("session_time")
   end
+
+  it "does not HTML-escape quotes in the JSON-encoded logged_out_url" do
+    result = instance.session_check(logged_out_url: '/users/sign_in?next=%2F"home"')
+    expect(result).to include('logged_out_url: "/users/sign_in?next=%2F\"home\"",')
+    expect(result).not_to include("&quot;")
+    expect(result).not_to include("\\u0022")
+  end
+
+  it "escapes HTML-significant characters in logged_out_url so it can't break out of the <script> tag" do
+    result = instance.session_check(logged_out_url: '</script><script>alert(1)</script>')
+    expect(result).not_to include("</script><script>alert(1)</script>")
+    expect(result).to include('logged_out_url: "\u003c/script\u003e\u003cscript\u003ealert(1)\u003c/script\u003e",')
+  end
 end
