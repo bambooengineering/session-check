@@ -1,18 +1,47 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "warden/test/helpers"
 
 describe Session::Check::SessionChecksController, type: :request do
+  include Warden::Test::Helpers
+
+  after(:each) { Warden.test_reset! }
+
   around(:each) do |example|
     Timecop.freeze { example.run }
   end
 
+  let(:user) do
+    User.find_or_create_by!(email: "user@example.com") { |u| u.password = "password123" }
+  end
+
   describe "#time_to_session_expiry" do
     context "with the default session_active_proc" do
-      it "returns session_exists: true and Devise.timeout_in when a user is present" do
+      it "returns session_exists: true and Devise.timeout_in when a user is signed in" do
+        login_as user, scope: :user
         get "/session_check/time_to_session_expiry"
         result = JSON.parse(response.body)
         expect(result).to eq({ "session_exists" => true, "session_expires_in" => Devise.timeout_in.to_i })
+      end
+
+      it "returns session_exists: false when no user is signed in" do
+        get "/session_check/time_to_session_expiry"
+        result = JSON.parse(response.body)
+        expect(result).to eq({ "session_exists" => false, "session_expires_in" => 0 })
+      end
+
+      it "returns 200 with session_exists: false, rather than a 401, once the Devise session " \
+        "has timed out" do
+        login_as user, scope: :user
+        get "/session_check/time_to_session_expiry" # first request lands the login_as session
+
+        Timecop.travel(Devise.timeout_in.from_now + 60) do
+          get "/session_check/time_to_session_expiry"
+          expect(response.status).to eq(200)
+          result = JSON.parse(response.body)
+          expect(result).to eq({ "session_exists" => false, "session_expires_in" => 0 })
+        end
       end
     end
 

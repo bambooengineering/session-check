@@ -15,14 +15,24 @@ module Session
         @logged_out_url = '/users/sign_in'
         @check_every_s = 10
         @session_active_proc = ->(controller) {
-          user = begin
-            controller.current_user
+          # Fetch the Warden user directly, with `run_callbacks: false`, instead of calling
+          # `controller.current_user`. Devise's Timeoutable module hooks into Warden's
+          # `after_set_user` callback (triggered by `current_user`/`authenticate`) and, when the
+          # session has actually timed out, signs the user out and does
+          # `throw :warden, message: :timeout`. Since this endpoint is JSON-only, that throw is
+          # handled by Warden's failure app as a 401 response rather than the plain
+          # `{ exists: false }` payload this proc is supposed to return, so callers ended up
+          # seeing a 401 instead of a graceful "session no longer active" result. Skipping
+          # callbacks avoids triggering that sign-out/401 side effect on every check.
+          warden = begin
+            controller.request.env['warden']
           rescue NoMethodError
             nil
           end
+          user = warden&.user(scope: :user, run_callbacks: false)
           if user
             expires_in = Session::Check::Devise.expires_in(controller.session)
-            { exists: true, expires_in: expires_in }
+            { exists: expires_in.positive?, expires_in: expires_in }
           else
             { exists: false, expires_in: 0 }
           end
