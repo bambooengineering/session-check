@@ -8,8 +8,8 @@ require 'session/check/version'
 Gem::Specification.new do |s|
   s.name = 'session-check'
   s.version = Session::Check::VERSION
-  s.authors = ['Harry Lascelles']
-  s.email = ['harry@harrylascelles.com']
+  s.authors = ["Silvercat Devs"]
+  s.email = ["dev@silvercat.com"]
   s.homepage = 'https://github.com/bambooengineering/session-check'
   s.summary = 'A gem for JS clients to check if their session has expired.'
   s.license = 'MIT'
