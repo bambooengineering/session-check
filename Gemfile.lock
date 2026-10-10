@@ -236,7 +236,7 @@ GEM
       rspec-support (~> 3.13)
     rspec-support (3.13.7)
     securerandom (0.4.1)
-    sqlite3 (2.9.5)
+    sqlite3 (2.9.6)
       mini_portile2 (~> 2.8.0)
     thor (1.5.0)
     timecop (0.9.11)
